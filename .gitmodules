@@ -1,0 +1,9 @@
+[submodule "WS-Retail-Solutions-database"]
+	path = WS-Retail-Solutions-database
+	url = https://github.com/Willians-Henrique/WS-Retail-Solutions-database.git
+[submodule "WS-Retail-Solutions-backend"]
+	path = WS-Retail-Solutions-backend
+	url = https://github.com/Willians-Henrique/WS-Retail-Solutions-backend.git
+[submodule "WS-Retail-Solutions-frontend"]
+	path = WS-Retail-Solutions-frontend
+	url = https://github.com/Willians-Henrique/WS-Retail-Solutions-frontend.git
