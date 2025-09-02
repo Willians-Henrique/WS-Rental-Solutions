@@ -1,0 +1,37 @@
+services:
+  #Database services:
+  #Sql Server Database
+  db-ws-solutions:
+    container_name: db-ws-solutions
+    image: mcr.microsoft.com/mssql/server:2022-CU19-GDR1-ubuntu-22.04  # Microsoft SQL Server 2022 - version 2022-CU19-GDR1 - last updated on 2025-07-08
+    environment:
+      - ACCEPT_EULA=${ACCEPT_EULA} #accept the end user license agreement
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD} #set the SA password
+    ports:
+      - "${DB_PORT_HOST}:${DB_PORT_DOCKER}" # map the host port to the container port
+    volumes:
+      - db_data:/var/opt/mssql # Persistent storage for database files
+      - ./logs:/var/opt/mssql/log # Persistent storage for logs
+    networks:
+      - ws-solutions-network
+    restart: unless-stopped # Always restart unless stopped manually
+
+  #SQL tool, to creat DecolaTrips_DB
+  sql-tools:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: sql-tools
+    environment:
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    networks:
+      - ws-solutions-network
+    depends_on:
+      - db-ws-solutions
+
+volumes:
+  db_data:
+
+networks:
+  ws-solutions-network:
+    driver: bridge
