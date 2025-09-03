@@ -28,6 +28,27 @@ services:
       - ws-solutions-network
     depends_on:
       - db-ws-solutions
+  
+  backend-ws-solutions:
+    build:
+      context: ./WS-Retail-Solutions-backend
+      dockerfile: Dockerfile
+    container_name: backend-ws-solutions
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./WS-Retail-Solutions-backend/src:/app/src
+      - ./WS-Retail-Solutions-backend/pom.xml:/app/pom.xml
+      - ./WS-Retail-Solutions-backend/src/main/resources:/app/src/main/resources
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      #- API_SECURITY_TOKEN_SECRET=${API_SECURITY_TOKEN_SECRET}
+    networks:
+      - ws-solutions-network
+    depends_on:
+      #- db-mssql
+      - sql-tools
 
 volumes:
   db_data:
