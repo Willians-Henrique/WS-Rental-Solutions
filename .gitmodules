@@ -8,3 +8,6 @@
 	path = WS-Rental-Solutions-frontend
 	url = https://github.com/Willians-Henrique/WS-Rental-Solutions-frontend.git
 
+[submodule "WS-Rental-Solutions-logs"]
+	path = WS-Rental-Solutions-logs
+	url = https://github.com/Willians-Henrique/WS-Rental-Solutions-logs.git

@@ -24,6 +24,8 @@ services:
     container_name: sql-tools
     environment:
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    volumes:
+      - ./WS-Rental-Solutions-database/scripts-sql:/scripts-sql
     networks:
       - ws-solutions-network
     depends_on:
@@ -31,15 +33,15 @@ services:
   
   backend-ws-solutions:
     build:
-      context: ./WS-Retail-Solutions-backend
+      context: ./WS-Rental-Solutions-backend
       dockerfile: Dockerfile
     container_name: backend-ws-solutions
     ports:
       - "8080:8080"
     volumes:
-      - ./WS-Retail-Solutions-backend/src:/app/src
-      - ./WS-Retail-Solutions-backend/pom.xml:/app/pom.xml
-      - ./WS-Retail-Solutions-backend/src/main/resources:/app/src/main/resources
+      - ./WS-Rental-Solutions-backend/src:/app/src
+      - ./WS-Rental-Solutions-backend/pom.xml:/app/pom.xml
+      - ./WS-Rental-Solutions-backend/src/main/resources:/app/src/main/resources
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
