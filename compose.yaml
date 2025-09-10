@@ -1,6 +1,7 @@
 services:
-  #Database services:
-  #Sql Server Database
+  #=============================================================================
+  # DATABASE SERVICE
+  #=============================================================================
   db-ws-solutions:
     container_name: db-ws-solutions
     image: mcr.microsoft.com/mssql/server:2022-CU19-GDR1-ubuntu-22.04  # Microsoft SQL Server 2022 - version 2022-CU19-GDR1 - last updated on 2025-07-08
@@ -11,10 +12,16 @@ services:
       - "${DB_PORT_HOST}:${DB_PORT_DOCKER}" # map the host port to the container port
     volumes:
       - db_data:/var/opt/mssql # Persistent storage for database files
-      - ./logs:/var/opt/mssql/log # Persistent storage for logs
+      - ./WS-Rental-Solutions-database/scripts-sql:/scripts-sql:ro
     networks:
       - ws-solutions-network
     restart: unless-stopped # Always restart unless stopped manually
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $$MSSQL_SA_PASSWORD -Q 'SELECT 1' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   #SQL tool, to creat DecolaTrips_DB
   sql-tools:
@@ -31,17 +38,17 @@ services:
     depends_on:
       - db-ws-solutions
   
-  backend-ws-solutions:
+  backend-auth-service-ws-solutions:
     build:
-      context: ./WS-Rental-Solutions-backend
+      context: ./WS-Rental-Solutions-backend/WS-Rental-Solutions-auth-service
       dockerfile: Dockerfile
-    container_name: backend-ws-solutions
+    container_name: backend-auth-service-ws-solutions
     ports:
-      - "8080:8080"
+      - "8081:8080"
     volumes:
-      - ./WS-Rental-Solutions-backend/src:/app/src
-      - ./WS-Rental-Solutions-backend/pom.xml:/app/pom.xml
-      - ./WS-Rental-Solutions-backend/src/main/resources:/app/src/main/resources
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-auth-service/src:/app/src
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-auth-service/pom.xml:/app/pom.xml
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-auth-service/src/main/resources:/app/src/main/resources
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
