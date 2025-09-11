@@ -59,6 +59,23 @@ services:
       #- db-mssql
       - sql-tools
 
+  backend-api-gateway-service-ws-solutions:
+    build:
+      context: ./WS-Rental-Solutions-backend/WS-Rental-Solutions-api-gateway-service
+      dockerfile: Dockerfile
+    container_name: backend-api-gateway-service-ws-solutions
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-api-gateway-service/src:/app/src
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-api-gateway-service/pom.xml:/app/pom.xml
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-api-gateway-service/src/main/resources:/app/src/main/resources
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+    networks:
+      - ws-solutions-network
+
 volumes:
   db_data:
 
