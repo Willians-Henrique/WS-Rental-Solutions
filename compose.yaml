@@ -75,6 +75,22 @@ services:
 
     networks:
       - ws-solutions-network
+  backend-person-service-ws-solutions:
+    build:
+      context: ./WS-Rental-Solutions-backend/WS-Rental-Solutions-person-service
+      dockerfile: Dockerfile
+    container_name: backend-person-service-ws-solutions
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-person-service/src:/app/src
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-person-service/pom.xml:/app/pom.xml
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-person-service/src/main/resources:/app/src/main/resources
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+    networks:
+      - ws-solutions-network
 
 volumes:
   db_data:
