@@ -92,6 +92,24 @@ services:
     networks:
       - ws-solutions-network
 
+  backend-property-service-ws-solutions:
+    build:
+      context: ./WS-Rental-Solutions-backend/WS-Rental-Solutions-property-service
+      dockerfile: Dockerfile
+    container_name: backend-property-service-ws-solutions
+    ports:
+      - "8083:8080"
+    volumes:
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-property-service/src:/app/src
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-property-service/pom.xml:/app/pom.xml
+      - ./WS-Rental-Solutions-backend/WS-Rental-Solutions-property-service/src/main/resources:/app/src/main/resources
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+
+    networks:
+      - ws-solutions-network
+
+
 volumes:
   db_data:
 
